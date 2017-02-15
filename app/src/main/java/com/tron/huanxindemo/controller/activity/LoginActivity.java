@@ -11,7 +11,6 @@ import android.widget.EditText;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
-import com.tron.huanxindemo.MainActivity;
 import com.tron.huanxindemo.R;
 import com.tron.huanxindemo.model.Model;
 import com.tron.huanxindemo.model.bean.UserInfo;

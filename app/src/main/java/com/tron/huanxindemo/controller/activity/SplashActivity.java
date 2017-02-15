@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 
 import com.hyphenate.chat.EMClient;
-import com.tron.huanxindemo.MainActivity;
 import com.tron.huanxindemo.R;
 import com.tron.huanxindemo.model.Model;
 
