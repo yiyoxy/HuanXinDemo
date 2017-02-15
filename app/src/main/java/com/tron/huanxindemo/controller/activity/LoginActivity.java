@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(username)) {
             ShowToast.show(this, "账号或密码为空");
+            return false;
         }
 
         return true;
