@@ -15,10 +15,12 @@ import com.tron.huanxindemo.model.table.InvitationTable;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    // 创建数据库
     public DBHelper(Context context, String name) {
         super(context, name, null, 1);
     }
 
+    //  onCreate() : 数据库第一次创建时执行，只执行一次，以后不再执行
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 创建联系人表
