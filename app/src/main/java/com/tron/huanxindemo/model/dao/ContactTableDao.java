@@ -98,7 +98,7 @@ public class ContactTableDao {
         List<UserInfo> userInfos = new ArrayList<>();
         for (String hxId : hxIds) {
             UserInfo userInfo = getContactByHxId(hxId);
-            if (userInfo == null) {
+            if (userInfo != null) {
                 userInfos.add(userInfo);
             }
         }
