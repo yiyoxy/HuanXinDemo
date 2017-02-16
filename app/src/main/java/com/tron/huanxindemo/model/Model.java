@@ -38,6 +38,9 @@ public class Model {
 
         // 创建AccountDb数据库
         accountDao = new AccountDao(context);
+
+        // 初始化全局监听
+        new GlobalListener(context);
     }
 
     /**
