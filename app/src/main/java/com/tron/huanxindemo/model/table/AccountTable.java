@@ -2,6 +2,8 @@ package com.tron.huanxindemo.model.table;
 
 /**
  * Created by Tron on 2017/2/15.
+ *
+ * 创建用户账号表类
  */
 
 public class AccountTable {

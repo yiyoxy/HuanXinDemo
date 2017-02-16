@@ -2,7 +2,7 @@ package com.tron.huanxindemo.model.bean;
 
 /**
  * Created by Tron on 2017/2/16.
- *
+ * <p>
  * 群组数据bean类
  */
 

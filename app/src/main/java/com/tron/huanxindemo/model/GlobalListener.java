@@ -7,15 +7,17 @@ import com.hyphenate.chat.EMClient;
 
 /**
  * Created by Tron on 2017/2/16.
+ *
+ * 全局监听联系人变化
  */
 public class GlobalListener {
 
     public GlobalListener(Context context) {
-        EMClient.getInstance().contactManager().setContactListener(listener);
+        EMClient.getInstance().contactManager().setContactListener(contactListener);
 
     }
 
-    EMContactListener listener = new EMContactListener() {
+    private EMContactListener contactListener = new EMContactListener() {
 
         //收到好友邀请
         @Override

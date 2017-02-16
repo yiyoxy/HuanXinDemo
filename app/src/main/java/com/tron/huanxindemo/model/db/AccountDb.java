@@ -9,7 +9,7 @@ import com.tron.huanxindemo.model.table.AccountTable;
 /**
  * Created by Tron on 2017/2/15.
  *
- * 创建数据库
+ * 创建用户账号数据库
  */
 
 public class AccountDb extends SQLiteOpenHelper {

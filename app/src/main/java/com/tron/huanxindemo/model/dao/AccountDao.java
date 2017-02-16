@@ -13,7 +13,7 @@ import com.tron.huanxindemo.model.table.AccountTable;
 /**
  * Created by Tron on 2017/2/15.
  *
- * 对数据库的中的数据进行操作
+ * 创建(数据库操作类)用户账号表的操作类
  */
 
 public class AccountDao {
@@ -25,7 +25,7 @@ public class AccountDao {
         accountDb = new AccountDb(context);
     }
 
-    // 添加用户到数据库
+    // 添加用户到账户表中
     public void addAccount(UserInfo user){
         // 验证
         if(user == null) {
@@ -77,7 +77,8 @@ public class AccountDao {
         String sql = "selec * from" + AccountTable.COL_USER_NAME + " where"
                 + AccountTable.COL_USER_HXID + "?=";
 
-        // 第一个参数是sql语句, 第二个参数是sql语句的占位符(问号),对应的(参数)值
+        // 第一个参数是sql语句,
+        // 第二个参数是sql语句的占位符(问号),对应的(参数)值, 如果占位符为空, 可以设置为null
         Cursor cursor = database.rawQuery(sql, new String[]{hxId});
 
         UserInfo userInfo = null;
