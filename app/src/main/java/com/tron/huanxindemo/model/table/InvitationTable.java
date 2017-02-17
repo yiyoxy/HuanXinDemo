@@ -29,7 +29,7 @@ public class InvitationTable {
     public static final String CREATE_TABLE = "create table " + TABLE_NAME
             + "("
             + COL_USER_HXID + " text primary key,"
-            + COL_GROUP_NAME + " text,"
+            + COL_USER_NAME + " text,"
             + COL_GROUP_NAME + " text,"
             + COL_GROUP_ID + " text,"
             + COL_REASON + " text,"

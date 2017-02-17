@@ -1,6 +1,7 @@
 package com.tron.huanxindemo;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.controller.EaseUI;
@@ -12,6 +13,8 @@ import com.tron.huanxindemo.model.Model;
 
 public class IMApplication extends Application {
 
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -21,6 +24,8 @@ public class IMApplication extends Application {
 
         // 初始化Model
         Model.getInstance().init(this);
+
+        context = this;
     }
 
     private void initHXSdk() {
@@ -33,5 +38,9 @@ public class IMApplication extends Application {
         // 初始化EaseUI
         EaseUI.getInstance().init(this, options);
 
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

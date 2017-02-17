@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 默认显示会话页面
         switchFragment(R.id.rb_main_conversation);
+
     }
 
     private void initListener() {
@@ -58,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void switchFragment(int chenkedId) {
+    private void switchFragment(int checkedId) {
         Fragment fragment = null;
-        switch (chenkedId) {
+        switch (checkedId) {
             case R.id.rb_main_contact:
                 fragment = contactFragment;
                 break;

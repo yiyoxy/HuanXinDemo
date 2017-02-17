@@ -1,6 +1,7 @@
 package com.tron.huanxindemo.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.tron.huanxindemo.model.dao.AccountDao;
 import com.tron.huanxindemo.model.db.DBManager;
@@ -21,7 +22,8 @@ public class Model {
      * 单例模式
      */
     // 1.私有化构造器
-    private Model(){};
+    private Model(){
+    }
 
     // 2.创建一个静态变量
     private static Model model = new Model();
@@ -71,5 +73,11 @@ public class Model {
         }
 
         dbManager = new DBManager(context, currentUser + ".db");
+
+        Log.e("TAG", "dbManager=====" + dbManager);
+    }
+
+    public DBManager getDBManager(){
+        return dbManager;
     }
 }

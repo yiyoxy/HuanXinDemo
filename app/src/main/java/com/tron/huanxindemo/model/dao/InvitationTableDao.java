@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.tron.huanxindemo.model.bean.GroupInfo;
 import com.tron.huanxindemo.model.bean.InvitationInfo;
@@ -58,6 +59,8 @@ public class InvitationTableDao {
         contentValues.put(InvitationTable.COL_STATUS, invitationInfo.getStatus().ordinal());
 
         database.replace(InvitationTable.TABLE_NAME, null, contentValues);
+
+        Log.e("TAG", "database=====" + database);
 
     }
 
