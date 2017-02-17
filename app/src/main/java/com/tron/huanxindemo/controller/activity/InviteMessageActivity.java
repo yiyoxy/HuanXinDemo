@@ -1,6 +1,11 @@
 package com.tron.huanxindemo.controller.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
@@ -10,6 +15,7 @@ import com.tron.huanxindemo.R;
 import com.tron.huanxindemo.controller.adapter.InviteMessageAdapter;
 import com.tron.huanxindemo.model.Model;
 import com.tron.huanxindemo.model.bean.InvitationInfo;
+import com.tron.huanxindemo.utils.Constant;
 import com.tron.huanxindemo.utils.ShowToast;
 
 import java.util.List;
@@ -24,6 +30,13 @@ public class InviteMessageActivity extends AppCompatActivity {
 
     private InviteMessageAdapter adapter;
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refresh();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +44,13 @@ public class InviteMessageActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initView();
+
+        initData();
+    }
+
+    private void initData() {
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager.registerReceiver(receiver, new IntentFilter(Constant.NEW_INVITE_CHANGE));
     }
 
     private void initView() {
