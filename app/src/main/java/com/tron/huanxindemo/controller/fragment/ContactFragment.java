@@ -1,6 +1,5 @@
 package com.tron.huanxindemo.controller.fragment;
 
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,8 +21,8 @@ import butterknife.Unbinder;
 
 public class ContactFragment extends EaseContactListFragment {
 
-    @BindView(R.id.contanct_iv_invite)
-    ImageView contanctIvInvite;
+    @BindView(R.id.contact_iv_invite)
+    ImageView contactIvInvite;
     @BindView(R.id.ll_new_friends)
     LinearLayout llNewFriends;
     @BindView(R.id.ll_groups)

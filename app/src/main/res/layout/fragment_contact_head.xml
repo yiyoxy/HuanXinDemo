@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:id="@+id/contanct_iv_invite"
+            android:id="@+id/contact_iv_invite"
             android:visibility="gone"
             android:background="@android:drawable/ic_notification_overlay"/>
 

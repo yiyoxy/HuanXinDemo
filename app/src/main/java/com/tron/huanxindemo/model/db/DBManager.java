@@ -37,7 +37,7 @@ public class DBManager {
         return invitationTableDao;
     }
 
-    public DBHelper getDbHelper() {
-        return dbHelper;
+    public void close() {
+        dbHelper.close();
     }
 }

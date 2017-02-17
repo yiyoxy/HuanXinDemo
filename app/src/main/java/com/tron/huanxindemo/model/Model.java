@@ -3,6 +3,7 @@ package com.tron.huanxindemo.model;
 import android.content.Context;
 
 import com.tron.huanxindemo.model.dao.AccountDao;
+import com.tron.huanxindemo.model.db.DBManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,8 +31,10 @@ public class Model {
         return model;
     }
 
+
     private AccountDao accountDao;
     private Context context;
+    private DBManager dbManager;
 
     public void init(Context context){
         this.context = context;
@@ -63,5 +66,10 @@ public class Model {
 
     public void loginSuccess(String currentUser){
 
+        if (dbManager != null){
+            dbManager.close();
+        }
+
+        dbManager = new DBManager(context, currentUser + ".db");
     }
 }

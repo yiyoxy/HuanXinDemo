@@ -11,14 +11,15 @@ import com.tron.huanxindemo.model.Model;
  */
 
 public class IMApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        // 初始化环信 SDK
+        // 初始化环信SDK
         initHXSdk();
 
-        //初始化 Modle!!!!!!!!!!!!!!!!!!!
+        // 初始化Model
         Model.getInstance().init(this);
     }
 

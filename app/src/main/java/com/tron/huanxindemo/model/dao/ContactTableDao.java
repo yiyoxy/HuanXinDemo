@@ -129,7 +129,7 @@ public class ContactTableDao {
 
     // 保存联系人信息
     public void savaContacts(List<UserInfo> contacts, boolean isMyContact){
-        
+
         // 判断
         if(contacts == null || contacts.size() == 0) {
             return;
@@ -155,19 +155,3 @@ public class ContactTableDao {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
