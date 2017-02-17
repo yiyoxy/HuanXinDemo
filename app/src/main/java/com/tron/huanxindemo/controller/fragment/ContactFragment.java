@@ -45,6 +45,8 @@ public class ContactFragment extends EaseContactListFragment {
         }
     };
 
+    private LocalBroadcastManager broadcastManager;
+
     // 是否显示小红点
     public void isShowPoint() {
         boolean isShow = SpUtils.getInstance().getBoolean(SpUtils.NEW_INVITE, false);
@@ -80,7 +82,7 @@ public class ContactFragment extends EaseContactListFragment {
         isShowPoint();
 
         // 注册广播
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         broadcastManager.registerReceiver(receiver, new IntentFilter(Constant.NEW_INVITE_CHANGE));
 
     }
@@ -109,8 +111,9 @@ public class ContactFragment extends EaseContactListFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         unbinder.unbind();
+        broadcastManager.unregisterReceiver(receiver);
     }
 }
