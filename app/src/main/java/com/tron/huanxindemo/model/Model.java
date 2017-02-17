@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.tron.huanxindemo.model.dao.AccountDao;
 import com.tron.huanxindemo.model.db.DBManager;
+import com.tron.huanxindemo.utils.SpUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -79,5 +80,9 @@ public class Model {
 
     public DBManager getDBManager(){
         return dbManager;
+    }
+
+    public void exitLogin() {
+        SpUtils.getInstance().destroy();
     }
 }

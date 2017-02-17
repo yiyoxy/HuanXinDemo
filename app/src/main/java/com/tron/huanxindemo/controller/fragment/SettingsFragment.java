@@ -58,6 +58,7 @@ public class SettingsFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         // 推出后的其他操作
+                        Model.getInstance().exitLogin();
 
                         // 跳转到登陆界面
                         ShowToast.showUI(getActivity(), "退出成功!");

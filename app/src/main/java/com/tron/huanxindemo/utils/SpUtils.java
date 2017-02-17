@@ -57,4 +57,7 @@ public class SpUtils {
         return mSp.getInt(key, deValue);
     }
 
+    public void destroy() {
+        mSp = null;
+    }
 }
