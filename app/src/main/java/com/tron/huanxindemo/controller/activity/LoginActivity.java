@@ -71,14 +71,18 @@ public class LoginActivity extends AppCompatActivity {
                             EMClient.getInstance().login(username, password, new EMCallBack() {
                                 @Override
                                 public void onSuccess() {
-                                    // 登录成功
+
+                                    // 登录成功, 创建保存用户信息(联系人和邀请信息)的数据库:username.db
                                     Model.getInstance().loginSuccess(EMClient.getInstance().getCurrentUser());
-                                    // 将用户保存到数据库
+
+                                    // 创建保存用户(登录过环信的用户)的数据库:account.db
                                     Model.getInstance().getAccountDao().addAccount(new UserInfo(EMClient.getInstance().getCurrentUser()));
-                                    //跳转
+
+                                    // 跳转到主界面
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
-                                    //结束
+
+                                    //结束当前activity
                                     finish();
                                 }
 

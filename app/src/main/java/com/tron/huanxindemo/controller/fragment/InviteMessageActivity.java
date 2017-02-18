@@ -1,4 +1,4 @@
-package com.tron.huanxindemo.controller.activity;
+package com.tron.huanxindemo.controller.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

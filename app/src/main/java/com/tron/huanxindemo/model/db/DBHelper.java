@@ -15,7 +15,7 @@ import com.tron.huanxindemo.model.table.InvitationTable;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    // 创建联系人数据库
+    // 创建username.db数据库, 其中保存用户的联系人和邀请信息
     public DBHelper(Context context, String name) {
         super(context, name, null, 1);
     }
