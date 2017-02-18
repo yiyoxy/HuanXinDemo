@@ -29,9 +29,9 @@ public class ChatActivity extends AppCompatActivity {
         // 聊天的Fragment
         EaseChatFragment chatFragment = new EaseChatFragment();
 
-        if (getIntent().getExtras() == null){
-            return;
-        }
+//        if (getIntent().getExtras() == null){
+//            return;
+//        }
 
         chatFragment.setArguments(getIntent().getExtras());
 
