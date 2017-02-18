@@ -10,13 +10,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
+import com.hyphenate.exceptions.HyphenateException;
 import com.tron.huanxindemo.R;
 import com.tron.huanxindemo.controller.activity.InviteActivity;
 import com.tron.huanxindemo.controller.activity.InviteMessageActivity;
+import com.tron.huanxindemo.model.Model;
+import com.tron.huanxindemo.model.bean.UserInfo;
 import com.tron.huanxindemo.utils.Constant;
 import com.tron.huanxindemo.utils.ShowToast;
 import com.tron.huanxindemo.utils.SpUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +94,70 @@ public class ContactFragment extends EaseContactListFragment {
         broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         broadcastManager.registerReceiver(receiver, new IntentFilter(Constant.NEW_INVITE_CHANGE));
 
+        // 从环信服务器获取联系人信息
+        initData();
+    }
+
+    private void initData() {
+
+        // 获取联系人
+        Model.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // 1.服务器获取 ; 返回联系人的集合{username1, username2, username3, ...}
+                    List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
+
+                    // 保存到数据库
+                    List<UserInfo> userInfos = new ArrayList<>();
+
+                    for (int i = 0; i < contacts.size(); i++){
+                        userInfos.add(new UserInfo(contacts.get(i)));
+                    }
+
+                    Model.getInstance().getDBManager().getContactTableDao().savaContacts(userInfos, true);
+
+                    // 内存和网页
+                    refreshContacts();
+
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    ShowToast.showUI(getActivity(), "获取联系人失败" + e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    // 刷新联系人
+    private void refreshContacts() {
+
+        // 从本地获取数据
+        List<UserInfo> userInfos = Model.getInstance().getDBManager().getContactTableDao().getContacts();
+
+        // 校验
+        if (userInfos == null){
+            return;
+        }
+
+        // 转换数据
+        HashMap<String, EaseUser> maps = new HashMap<>();
+
+        for (UserInfo userInfo : userInfos) {
+            EaseUser user = new EaseUser(userInfo.getHxid());
+            maps.put(userInfo.getHxid(), user);
+        }
+
+        setContactsMap(maps);
+
+        refresh();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 刷新联系人界面
+        refreshContacts();
     }
 
     @Override
