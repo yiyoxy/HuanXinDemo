@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.exceptions.HyphenateException;
@@ -125,6 +126,10 @@ public class ContactFragment extends EaseContactListFragment {
 
                 // 跳转到会话界面
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
+
+                // 传参数
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername());
+
                 startActivity(intent);
             }
         });
