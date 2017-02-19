@@ -120,7 +120,7 @@ public class InviteMessageActivity extends AppCompatActivity {
 
                         } catch (HyphenateException e) {
                             e.printStackTrace();
-                            ShowToast.show(InviteMessageActivity.this, "拒绝失败" + e.getMessage());
+                            ShowToast.showUI(InviteMessageActivity.this, "拒绝失败" + e.getMessage());
                         }
                     }
                 });
