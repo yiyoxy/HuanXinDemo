@@ -105,7 +105,9 @@ public class GroupListActivity extends AppCompatActivity {
         groupListHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowToast.show(GroupListActivity.this, "创建群组");
+                // 跳转到群组创建的界面
+                Intent intent = new Intent(GroupListActivity.this, CreateGroupActivity.class);
+                startActivity(intent);
             }
         });
 
