@@ -60,7 +60,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
             // 创建群组
             createGroup(data);
         }
@@ -72,6 +72,16 @@ public class CreateGroupActivity extends AppCompatActivity {
             public void run() {
                 // 1.获得回调的数据: 群成员名称的数组
                 String[] members = data.getStringArrayExtra("members");
+
+                // 判断
+                if (members == null) {
+                    return;
+                }
+
+                if (members.length == 0) {
+                    ShowToast.showUI(CreateGroupActivity.this, "没有选中要添加的群成员!");
+                    return;
+                }
 
                 // 去环信服务器创建群
                 // 2.获得群设置
