@@ -25,7 +25,7 @@ public class PickAdapter extends BaseAdapter {
 
     private Context context;
 
-    // 数据集合
+    // 数据集合: 可供选择的联系人
     private List<PickInfo> pickInfos;
 
     public PickAdapter(Context context) {
@@ -93,4 +93,25 @@ public class PickAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
+    // 获取被选中的联系人
+    public List<String> getContactsChecked() {
+
+        // 校验
+        if (pickInfos == null) {
+            return null;
+        }
+
+        List<String> contactsChecked = new ArrayList<>();
+
+        for (PickInfo pickInfo : pickInfos) {
+            // 判断是否选中了联系人
+            if (pickInfo.isChecked()){
+                contactsChecked.add(pickInfo.getUserInfo().getHxid());
+            }
+        }
+
+        return contactsChecked;
+    }
+
 }

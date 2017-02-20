@@ -1,5 +1,6 @@
 package com.tron.huanxindemo.controller.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,9 +34,23 @@ public class PickContactActivity extends AppCompatActivity {
 
     private List<PickInfo> pickInfos;
 
+    // 返回选中的联系人
     @OnClick(R.id.tv_pick_save)
     public void onClick() {
+        List<String> contactCheck = pickAdapter.getContactsChecked();
 
+        if (contactCheck == null) {
+            return;
+        }
+
+        Intent intent = new Intent();
+
+        intent.putExtra("members", contactCheck.toArray(new String[contactCheck.size()]));
+
+        setResult(RESULT_OK, intent); // ResultCode
+
+        // 结束当前页面
+        finish();
     }
 
     @Override

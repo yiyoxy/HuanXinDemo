@@ -71,7 +71,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // 1.获得回调的数据: 群成员名称的数组
-                String[] memberses = data.getStringArrayExtra("members");
+                String[] members = data.getStringArrayExtra("members");
 
                 // 去环信服务器创建群
                 // 2.获得群设置
@@ -103,7 +103,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 // 5.创建群, 参数: 群名称, 群描述, 要邀请的群成员, 群的其他设置
                 try {
                     EMClient.getInstance().groupManager()
-                            .createGroup(groupName, groupDesc, memberses, "", groupOptions);
+                            .createGroup(groupName, groupDesc, members, "", groupOptions);
 
                     ShowToast.showUI(CreateGroupActivity.this, "创建群成功");
 

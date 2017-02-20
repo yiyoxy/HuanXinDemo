@@ -9,6 +9,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
         android:src="@mipmap/em_create_group" />
 
     <TextView
