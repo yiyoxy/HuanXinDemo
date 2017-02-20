@@ -150,7 +150,7 @@ public class GlobalListener {
             InvitationInfo invitationInfo = new InvitationInfo();
             invitationInfo.setReason(reason);
             invitationInfo.setStatus(InvitationInfo.InvitationStatus.NEW_GROUP_APPLICATION);
-            invitationInfo.setGroupInfo(new GroupInfo(groupName, groupId, reason));
+            invitationInfo.setGroupInfo(new GroupInfo(groupName, groupId, applyer));
 
             Model.getInstance().getDBManager().getInvitationTableDao()
                     .addInvitation(invitationInfo);
@@ -204,7 +204,7 @@ public class GlobalListener {
             InvitationInfo invitationInfo = new InvitationInfo();
             invitationInfo.setReason(reason);
             invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_INVITE_ACCEPTED);
-            invitationInfo.setGroupInfo(new GroupInfo(groupId, groupId, reason));
+            invitationInfo.setGroupInfo(new GroupInfo(groupId, groupId, inviter));
 
             Model.getInstance().getDBManager().getInvitationTableDao()
                     .addInvitation(invitationInfo);

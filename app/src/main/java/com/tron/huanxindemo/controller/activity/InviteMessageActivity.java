@@ -126,28 +126,136 @@ public class InviteMessageActivity extends AppCompatActivity {
                 });
             }
 
-            // 同意加群邀请
+            // 同意了加群邀请
             @Override
             public void onInviteAccept(final InvitationInfo info) {
+                Model.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 网络
+                        try {
+                            EMClient.getInstance().groupManager().acceptInvitation(
+                                    info.getGroupInfo().getGroupId(),
+                                    info.getGroupInfo().getInvitePerson());
 
+                            // 本地
+                            info.setStatus(InvitationInfo.InvitationStatus.GROUP_ACCEPT_INVITE);
+                            Model.getInstance().getDBManager().getInvitationTableDao().addInvitation(info);
+
+                            // 内存和网页
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                    ShowToast.show(InviteMessageActivity.this, "接受邀请成功");
+                                }
+                            });
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(InviteMessageActivity.this, "接受失败" + e.getMessage());
+                        }
+                    }
+                });
             }
 
-            // 拒绝加群邀请
+            // 拒绝了加群邀请
             @Override
-            public void onInviteReject(InvitationInfo info) {
+            public void onInviteReject(final InvitationInfo info) {
 
+                Model.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 网络
+                        try {
+                            EMClient.getInstance().groupManager().declineInvitation(
+                                    info.getGroupInfo().getGroupId(),
+                                    info.getGroupInfo().getInvitePerson(), "");
+
+                            // 本地
+                            info.setStatus(InvitationInfo.InvitationStatus.GROUP_REJECT_INVITE);
+                            Model.getInstance().getDBManager().getInvitationTableDao().addInvitation(info);
+
+                            // 内存和页面
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                    ShowToast.show(InviteMessageActivity.this, "拒绝成功");
+                                }
+                            });
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(InviteMessageActivity.this, "拒绝失败" + e.getMessage());
+                        }
+                    }
+                });
             }
 
-            // 加群申请被同意
+            // 同意了加群申请
             @Override
-            public void onApplicationAccept(InvitationInfo info) {
+            public void onApplicationAccept(final InvitationInfo info) {
 
+                Model.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 网络
+                        try {
+                            EMClient.getInstance().groupManager().acceptApplication(
+                                    info.getGroupInfo().getGroupName(),
+                                    info.getGroupInfo().getInvitePerson());
+
+                            // 本地
+                            info.setStatus(InvitationInfo.InvitationStatus.GROUP_ACCEPT_APPLICATION);
+                            Model.getInstance().getDBManager().getInvitationTableDao().addInvitation(info);
+
+                            // 内存和网页
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                    ShowToast.show(InviteMessageActivity.this, "接受成功");
+                                }
+                            });
+
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(InviteMessageActivity.this, "接受失败" + e.getMessage());
+                        }
+                    }
+                });
             }
 
-            // 加群申请被拒绝
+            // 拒绝了加群申请
             @Override
-            public void onApplicationReject(InvitationInfo info) {
+            public void onApplicationReject(final InvitationInfo info) {
 
+                Model.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 网络
+                        try {
+                            EMClient.getInstance().groupManager().declineApplication(
+                                    info.getGroupInfo().getGroupName(),
+                                    info.getGroupInfo().getInvitePerson(), "");
+
+                            // 本地
+                            info.setStatus(InvitationInfo.InvitationStatus.GROUP_REJECT_APPLICATION);
+                            Model.getInstance().getDBManager().getInvitationTableDao().addInvitation(info);
+
+                            // 内存和网页
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                    ShowToast.show(InviteMessageActivity.this, "拒绝成功");
+                                }
+                            });
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(InviteMessageActivity.this, "拒绝失败" + e.getMessage());
+                        }
+                    }
+                });
             }
 
 
@@ -164,7 +272,7 @@ public class InviteMessageActivity extends AppCompatActivity {
         List<InvitationInfo> invitations = Model.getInstance().getDBManager().getInvitationTableDao().getInvitations();
 
         // 刷新数据
-        if (invitations == null){
+        if (invitations == null) {
             return;
         }
 
