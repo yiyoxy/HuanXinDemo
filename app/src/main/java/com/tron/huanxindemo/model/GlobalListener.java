@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.hyphenate.EMContactListener;
+import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.chat.EMClient;
+import com.tron.huanxindemo.model.bean.GroupInfo;
 import com.tron.huanxindemo.model.bean.InvitationInfo;
 import com.tron.huanxindemo.model.bean.UserInfo;
 import com.tron.huanxindemo.utils.Constant;
@@ -33,6 +35,9 @@ public class GlobalListener {
 
         // 注册联系人监听
         EMClient.getInstance().contactManager().setContactListener(contactListener);
+
+        // 注册群监听
+        EMClient.getInstance().groupManager().addGroupChangeListener(groupListener);
 
         // 本地广播
         broadcastManager = LocalBroadcastManager.getInstance(context);
@@ -113,6 +118,150 @@ public class GlobalListener {
 
             // 发送广播
             broadcastManager.sendBroadcast(new Intent(Constant.CONTACT_CHANGE));
+        }
+    };
+
+    // 创建群监听
+    private final EMGroupChangeListener groupListener = new EMGroupChangeListener() {
+
+        // 收到别人邀请你加入群组的邀请
+        @Override
+        public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
+
+            // 添加邀请到数据库
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason(reason);
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.NEW_GROUP_INVITE);
+            invitationInfo.setGroupInfo(new GroupInfo(groupName, groupId, inviter));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
+        }
+
+        // 收到别人要加入你的群的申请
+        @Override
+        public void onApplicationReceived(String groupId, String groupName, String applyer, String reason) {
+
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason(reason);
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.NEW_GROUP_APPLICATION);
+            invitationInfo.setGroupInfo(new GroupInfo(groupName, groupId, reason));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
+        }
+
+        // 你的加群申请被同意
+        @Override
+        public void onApplicationAccept(String groupId, String groupName, String accepter) {
+
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason("");
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_APPLICATION_ACCEPTED);
+            invitationInfo.setGroupInfo(new GroupInfo(groupName, groupId, accepter));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
+        }
+
+        // 你的加群申请被拒绝
+        @Override
+        public void onApplicationDeclined(String groupId, String groupName, String decliner, String reason) {
+
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason(reason);
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_APPLICATION_DECLINED);
+            invitationInfo.setGroupInfo(new GroupInfo(groupName, groupId, decliner));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
+        }
+
+        // 别人接收了你的群组邀请
+        @Override
+        public void onInvitationAccepted(String groupId, String inviter, String reason) {
+
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason(reason);
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_INVITE_ACCEPTED);
+            invitationInfo.setGroupInfo(new GroupInfo(groupId, groupId, reason));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
+        }
+
+        // 别人拒绝了你的群组邀请
+        @Override
+        public void onInvitationDeclined(String groupId, String inviter, String reason) {
+
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason(reason);
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_INVITE_DECLINED);
+            invitationInfo.setGroupInfo(new GroupInfo(groupId, groupId, inviter));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
+
+        }
+
+        // 当前用户被管理员移除出群组
+        @Override
+        public void onUserRemoved(String s, String s1) {
+
+        }
+
+        // 群组被创建者解散
+        @Override
+        public void onGroupDestroyed(String s, String s1) {
+
+        }
+
+        // 自动接受群邀请
+        @Override
+        public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String reason) {
+
+            InvitationInfo invitationInfo = new InvitationInfo();
+            invitationInfo.setReason(reason);
+            invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_INVITE_ACCEPTED);
+            invitationInfo.setGroupInfo(new GroupInfo(groupId, groupId, inviter));
+
+            Model.getInstance().getDBManager().getInvitationTableDao()
+                    .addInvitation(invitationInfo);
+
+            // 保存小红点的状态
+            SpUtils.getInstance().save(SpUtils.NEW_INVITE, true);
+            // 发送广播
+            broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
         }
     };
 

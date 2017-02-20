@@ -117,6 +117,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                     ShowToast.showUI(CreateGroupActivity.this, "创建群成功");
 
+                    // 结束当前页面
                     finish();
                 } catch (HyphenateException e) {
                     e.printStackTrace();

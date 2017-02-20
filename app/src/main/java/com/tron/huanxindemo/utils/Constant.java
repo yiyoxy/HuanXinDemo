@@ -13,4 +13,6 @@ public class Constant {
     // 联系人状态
     public static final String CONTACT_CHANGE = "contact_change";
 
+    // 群邀请状态
+    public static final String GROUP_INVITE_CHANGE = "group_invite_change";
 }
