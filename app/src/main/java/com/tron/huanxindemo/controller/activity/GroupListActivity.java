@@ -125,8 +125,10 @@ public class GroupListActivity extends AppCompatActivity {
 
                 EMGroup emGroup = EMClient.getInstance().groupManager().getAllGroups().get(position - 1);
 
+                // 传入群id
                 intent.putExtra(EaseConstant.EXTRA_USER_ID, emGroup.getGroupId());
 
+                // 表明是群聊
                 intent.putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_GROUP);
 
                 startActivity(intent);
