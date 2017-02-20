@@ -15,4 +15,7 @@ public class Constant {
 
     // 群邀请状态
     public static final String GROUP_INVITE_CHANGE = "group_invite_change";
+
+    // 退群广播
+    public static final String DESTROY_GROUP = "destroy_group";
 }
