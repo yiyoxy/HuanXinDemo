@@ -10,6 +10,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
+import com.tron.huanxindemo.controller.activity.ChatActivity;
 
 import java.util.List;
 

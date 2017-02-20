@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.tron.huanxindemo.controller.fragment.CreateGroupActivity">
+    tools:context="com.tron.huanxindemo.controller.activity.CreateGroupActivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:layout_width="match_parent"

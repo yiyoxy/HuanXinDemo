@@ -1,4 +1,4 @@
-package com.tron.huanxindemo.controller.fragment;
+package com.tron.huanxindemo.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
