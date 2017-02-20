@@ -84,7 +84,7 @@ public class InviteMessageActivity extends AppCompatActivity {
                             });
                         } catch (HyphenateException e) {
                             e.printStackTrace();
-                            ShowToast.show(InviteMessageActivity.this, "接受失败" + e.getMessage());
+                            ShowToast.showUI(InviteMessageActivity.this, "接受失败" + e.getMessage());
                         }
                     }
                 });
@@ -125,6 +125,32 @@ public class InviteMessageActivity extends AppCompatActivity {
                     }
                 });
             }
+
+            // 同意加群邀请
+            @Override
+            public void onInviteAccept(final InvitationInfo info) {
+
+            }
+
+            // 拒绝加群邀请
+            @Override
+            public void onInviteReject(InvitationInfo info) {
+
+            }
+
+            // 加群申请被同意
+            @Override
+            public void onApplicationAccept(InvitationInfo info) {
+
+            }
+
+            // 加群申请被拒绝
+            @Override
+            public void onApplicationReject(InvitationInfo info) {
+
+            }
+
+
         });
 
         inviteMsgLv.setAdapter(adapter);

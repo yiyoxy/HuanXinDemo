@@ -72,6 +72,14 @@ public class ContactFragment extends EaseContactListFragment {
         }
     };
 
+    // 接收群组状态改变的广播
+    private BroadcastReceiver groupReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isShowPoint();
+        }
+    };
+
     // 是否显示小红点
     public void isShowPoint() {
         boolean isShow = SpUtils.getInstance().getBoolean(SpUtils.NEW_INVITE, false);
@@ -112,6 +120,9 @@ public class ContactFragment extends EaseContactListFragment {
 
         // 联系人更新的广播
         broadcastManager.registerReceiver(contactReceiver, new IntentFilter(Constant.CONTACT_CHANGE));
+
+        // 注册群组状态更新的广播
+        broadcastManager.registerReceiver(groupReceiver, new IntentFilter(Constant.GROUP_INVITE_CHANGE));
 
         // 初始化数据:从环信服务器获取联系人信息
         initData();
@@ -300,6 +311,9 @@ public class ContactFragment extends EaseContactListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        // 解注册广播监听
         broadcastManager.unregisterReceiver(receiver);
+        broadcastManager.unregisterReceiver(contactReceiver);
+        broadcastManager.unregisterReceiver(groupReceiver);
     }
 }

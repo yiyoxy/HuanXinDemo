@@ -197,7 +197,7 @@ public class GlobalListener {
             broadcastManager.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGE));
         }
 
-        // 别人接收了你的群组邀请
+        // 别人接受了你的群组邀请
         @Override
         public void onInvitationAccepted(String groupId, String inviter, String reason) {
 
