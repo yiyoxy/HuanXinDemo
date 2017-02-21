@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
 import com.tron.huanxindemo.R;
 import com.tron.huanxindemo.controller.adapter.PickAdapter;
 import com.tron.huanxindemo.model.Model;
@@ -35,6 +37,9 @@ public class PickContactActivity extends AppCompatActivity {
 
     private List<PickInfo> pickInfos;
 
+    private List<String> members;
+    private boolean isMember = false;
+
     // 返回选中的联系人
     @OnClick(R.id.tv_pick_save)
     public void onClick() {
@@ -49,7 +54,12 @@ public class PickContactActivity extends AppCompatActivity {
         // ArrayList提供了一个将List转为数组的一个非常方便的方法toArray
         intent.putExtra("members", contactCheck.toArray(new String[contactCheck.size()]));
 
-        setResult(RESULT_OK, intent); // ResultCode
+        if (isMember) {
+            setResult(2, intent);
+        } else {
+            setResult(RESULT_OK, intent); // ResultCode
+        }
+
 
         // 结束当前页面
         finish();
@@ -61,6 +71,8 @@ public class PickContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_contact);
         ButterKnife.bind(this);
 
+        getGroupId();
+
         // 初始化布局
         initView();
 
@@ -69,6 +81,27 @@ public class PickContactActivity extends AppCompatActivity {
 
         // 设置监听
         initListener();
+    }
+
+    private void getGroupId() {
+        String groupid = getIntent().getStringExtra("groupid");
+
+        if (groupid == null) {
+
+            // 说明是创建群
+            members = new ArrayList<>();
+
+            isMember = false;
+
+        } else {
+
+            isMember = true;
+
+            // 添加群成员
+            EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
+
+            members = group.getMembers();
+        }
     }
 
     private void initView() {
@@ -100,7 +133,7 @@ public class PickContactActivity extends AppCompatActivity {
             pickInfos.add(new PickInfo(userInfo, false));
         }
 
-        pickAdapter.refresh(pickInfos);
+        pickAdapter.refresh(pickInfos, members);
     }
 
     private void initListener() {
@@ -122,7 +155,7 @@ public class PickContactActivity extends AppCompatActivity {
                 pickInfo.setChecked(cbPick.isChecked());
 
                 // 刷新适配器
-                pickAdapter.refresh(pickInfos);
+                pickAdapter.refresh(pickInfos, members);
 
             }
         });

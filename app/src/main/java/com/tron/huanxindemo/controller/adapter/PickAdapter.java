@@ -28,22 +28,27 @@ public class PickAdapter extends BaseAdapter {
     // 数据集合: 可供选择的联系人
     private List<PickInfo> pickInfos;
 
+    private List<String> members;
+
     public PickAdapter(Context context) {
         this.context = context;
         pickInfos = new ArrayList<>();
+        members = new ArrayList<>();
     }
 
     // 刷新适配器
-    public void refresh(List<PickInfo> pickInfos) {
+    public void refresh(List<PickInfo> pickInfos, List<String> members) {
 
-        if (pickInfos == null) {
-            return;
+        if (pickInfos != null) {
+            this.pickInfos.clear();
+            this.pickInfos.addAll(pickInfos);
+            notifyDataSetChanged();
         }
 
-        this.pickInfos.clear();
-        this.pickInfos.addAll(pickInfos);
-
-        notifyDataSetChanged();
+        if (members != null && members.size() >= 0) {
+            this.members.clear();
+            this.members.addAll(members);
+        }
     }
 
     @Override

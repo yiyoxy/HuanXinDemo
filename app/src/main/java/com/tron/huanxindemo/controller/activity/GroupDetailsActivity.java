@@ -245,6 +245,11 @@ public class GroupDetailsActivity extends AppCompatActivity {
             @Override
             public void onAddGroupMember(UserInfo userInfo) {
                 ShowToast.showUI(GroupDetailsActivity.this, "添加成功");
+
+                // 跳转到选择好友界面
+                Intent intent = new Intent(GroupDetailsActivity.this, PickContactActivity.class);
+                intent.putExtra("groupid", mGroup.getGroupId());
+                startActivityForResult(intent, 2);
             }
         });
         // 设置适配器
@@ -265,4 +270,35 @@ public class GroupDetailsActivity extends AppCompatActivity {
         broadcastManager.sendBroadcast(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 2) {
+            // 添加选中的群成员
+            addMembers(data);
+        }
+    }
+
+    private void addMembers(Intent data) {
+        final String[] members = data.getStringArrayExtra("members");
+
+        if (members == null || members.length == 0) {
+            return;
+        }
+
+        Model.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EMClient.getInstance().groupManager().addUsersToGroup(mGroup.getGroupId(), members);
+
+                    ShowToast.showUI(GroupDetailsActivity.this, "添加群成员成功");
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    ShowToast.showUI(GroupDetailsActivity.this, "添加群成员失败" + e.getMessage());
+                }
+            }
+        });
+    }
 }

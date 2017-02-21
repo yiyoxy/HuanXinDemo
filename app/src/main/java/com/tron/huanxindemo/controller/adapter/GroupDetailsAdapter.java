@@ -1,6 +1,5 @@
 package com.tron.huanxindemo.controller.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.tron.huanxindemo.R;
 import com.tron.huanxindemo.model.bean.UserInfo;
-import com.tron.huanxindemo.utils.ShowToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -251,7 +249,9 @@ public class GroupDetailsAdapter extends BaseAdapter {
                     viewHolder.mIvMemberPhoto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ShowToast.show((Activity) mContext, "邀请成员");
+                            if (mOnMembersChangeListener != null) {
+                                mOnMembersChangeListener.onAddGroupMember(mUserInfos.get(position));
+                            }
                         }
                     });
                 } else {
