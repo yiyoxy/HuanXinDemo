@@ -14,32 +14,50 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.exceptions.HyphenateException;
 import com.tron.huanxindemo.IMApplication;
 import com.tron.huanxindemo.R;
+import com.tron.huanxindemo.controller.adapter.GroupDetailsAdapter;
 import com.tron.huanxindemo.model.Model;
+import com.tron.huanxindemo.model.bean.UserInfo;
 import com.tron.huanxindemo.utils.Constant;
 import com.tron.huanxindemo.utils.ShowToast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChatDetailsActivity extends AppCompatActivity {
+public class GroupDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.gv_group_detail)
     GridView gvGroupDetail;
     @BindView(R.id.bt_group_detail)
     Button btGroupDetail;
-    // 群id
+
     private String groupid;
+
+    private GroupDetailsAdapter mGroupDetailsAdapter;
+    private EMGroup mGroup;
+    private String mOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_details);
+        setContentView(R.layout.activity_group_details);
         ButterKnife.bind(this);
 
+        // 获取群id
+        getGroupId();
+
+        // initView();
+
+        // 初始化数据
         initData();
+
+        // 获取群成员
+        getGroupMembers();
     }
 
-    private void initData() {
+    private void getGroupId() {
 
         // 获取群id
         groupid = getIntent().getStringExtra("groupid");
@@ -48,13 +66,54 @@ public class ChatDetailsActivity extends AppCompatActivity {
             return;
         }
 
+    }
+
+    private void initView() {
+
+    }
+
+    private void getGroupMembers() {
+
+        Model.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                // 从网络获取群组
+                try {
+                    EMClient.getInstance().groupManager().getGroupFromServer(groupid);
+
+                    // 获取群成员
+                    List<String> members = mGroup.getMembers();
+
+                    // 转类型
+                    final List<UserInfo> userInfos = new ArrayList<>();
+
+                    for (String hxid : members) {
+                        userInfos.add(new UserInfo(hxid));
+                    }
+
+                    // 内存和网页
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mGroupDetailsAdapter.refresh(userInfos);
+                        }
+                    });
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initData() {
+
         // 获取当前的群组
-        EMGroup group = EMClient.getInstance().groupManager().getGroup(groupid);
+        mGroup = EMClient.getInstance().groupManager().getGroup(groupid);
 
         // 获取群主
-        String owner = group.getOwner();
+        mOwner = mGroup.getOwner();
 
-        if (EMClient.getInstance().getCurrentUser().equals(owner)) {
+        if (EMClient.getInstance().getCurrentUser().equals(mOwner)) {
             // 是群主
             btGroupDetail.setText("解散群");
 
@@ -77,13 +136,13 @@ public class ChatDetailsActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         finish();
-                                        ShowToast.show(ChatDetailsActivity.this, "解散群成功");
+                                        ShowToast.show(GroupDetailsActivity.this, "解散群成功");
                                     }
                                 });
 
                             } catch (HyphenateException e) {
                                 e.printStackTrace();
-                                ShowToast.showUI(ChatDetailsActivity.this, "解散群失败" + e.getMessage());
+                                ShowToast.showUI(GroupDetailsActivity.this, "解散群失败" + e.getMessage());
                             }
                         }
                     });
@@ -111,18 +170,25 @@ public class ChatDetailsActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         finish();
-                                        ShowToast.show(ChatDetailsActivity.this, "退群成功");
+                                        ShowToast.show(GroupDetailsActivity.this, "退群成功");
                                     }
                                 });
                             } catch (HyphenateException e) {
                                 e.printStackTrace();
-                                ShowToast.showUI(ChatDetailsActivity.this, "退群失败" + e.getMessage());
+                                ShowToast.showUI(GroupDetailsActivity.this, "退群失败" + e.getMessage());
                             }
                         }
                     });
                 }
             });
         }
+
+        // 判断是否有邀请的权限
+        boolean isCanModify = EMClient.getInstance().getCurrentUser().equals(mOwner) || mGroup.isPublic();
+        // 初始化adapter
+        mGroupDetailsAdapter = new GroupDetailsAdapter(this, isCanModify, mOwner);
+        // 设置适配器
+        gvGroupDetail.setAdapter(mGroupDetailsAdapter);
     }
 
     // 退群

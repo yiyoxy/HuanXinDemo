@@ -63,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onEnterToChatDetails() {
 
-                Intent intent = new Intent(ChatActivity.this, ChatDetailsActivity.class);
+                Intent intent = new Intent(ChatActivity.this, GroupDetailsActivity.class);
 
                 intent.putExtra("groupid", getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID));
 
