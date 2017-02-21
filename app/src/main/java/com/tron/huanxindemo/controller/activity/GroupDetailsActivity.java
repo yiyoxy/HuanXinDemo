@@ -217,13 +217,34 @@ public class GroupDetailsActivity extends AppCompatActivity {
         mGroupDetailsAdapter = new GroupDetailsAdapter(this, isCanModify, mOwner, new GroupDetailsAdapter.OnMembersChangeListener() {
 
             @Override
-            public void onRemoveGroupMember(UserInfo userInfo) {
-                ShowToast.show(GroupDetailsActivity.this, "删除成功");
+            public void onRemoveGroupMember(final UserInfo userInfo) {
+
+                Model.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        /**
+                         * 参数1: 群id
+                         * 参数2: 用户id
+                         */
+                        // 网络删除用户
+                        try {
+                            EMClient.getInstance().groupManager().removeUserFromGroup(mGroup.getGroupId(), userInfo.getHxid());
+
+                            // 网络获取群成员
+                            getGroupMembers();
+
+                            ShowToast.showUI(GroupDetailsActivity.this, "删除成功");
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(GroupDetailsActivity.this, "删除失败" + e.getMessage());
+                        }
+                    }
+                });
             }
 
             @Override
             public void onAddGroupMember(UserInfo userInfo) {
-                ShowToast.show(GroupDetailsActivity.this, "添加成功");
+                ShowToast.showUI(GroupDetailsActivity.this, "添加成功");
             }
         });
         // 设置适配器
