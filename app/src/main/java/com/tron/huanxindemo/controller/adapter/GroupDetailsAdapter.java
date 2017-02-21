@@ -41,12 +41,14 @@ public class GroupDetailsAdapter extends BaseAdapter {
     // 群主
     private String mOwner;
 
-    public GroupDetailsAdapter(Context context, boolean isCanModify, String mOwner) {
+    public GroupDetailsAdapter(Context context, boolean isCanModify, String mOwner, OnMembersChangeListener onMembersChangeListener) {
         mContext = context;
         mIsCanModify = isCanModify;
         mUserInfos = new ArrayList<>();
 
         this.mOwner = mOwner;
+
+        mOnMembersChangeListener = onMembersChangeListener;
     }
 
 
@@ -206,7 +208,9 @@ public class GroupDetailsAdapter extends BaseAdapter {
                 viewHolder.mIvMemberPhoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        if (mOnMembersChangeListener != null) {
+                            mOnMembersChangeListener.onAddGroupMember(mUserInfos.get(position));
+                        }
                     }
                 });
 
@@ -216,7 +220,9 @@ public class GroupDetailsAdapter extends BaseAdapter {
                 viewHolder.mIvMemberDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        if (mOnMembersChangeListener != null) {
+                            mOnMembersChangeListener.onRemoveGroupMember(mUserInfos.get(position));
+                        }
                     }
                 });
             }
@@ -280,5 +286,18 @@ public class GroupDetailsAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    // 接口回调
+    private OnMembersChangeListener mOnMembersChangeListener;
+
+    public interface OnMembersChangeListener {
+
+        // 移除成员
+        void onRemoveGroupMember(UserInfo userInfo);
+
+        // 添加成员
+        void onAddGroupMember(UserInfo userInfo);
+
     }
 }

@@ -186,7 +186,18 @@ public class GroupDetailsActivity extends AppCompatActivity {
         // 判断是否有邀请的权限
         boolean isCanModify = EMClient.getInstance().getCurrentUser().equals(mOwner) || mGroup.isPublic();
         // 初始化adapter
-        mGroupDetailsAdapter = new GroupDetailsAdapter(this, isCanModify, mOwner);
+        mGroupDetailsAdapter = new GroupDetailsAdapter(this, isCanModify, mOwner, new GroupDetailsAdapter.OnMembersChangeListener() {
+
+            @Override
+            public void onRemoveGroupMember(UserInfo userInfo) {
+                ShowToast.show(GroupDetailsActivity.this, "删除成功");
+            }
+
+            @Override
+            public void onAddGroupMember(UserInfo userInfo) {
+                ShowToast.show(GroupDetailsActivity.this, "添加成功");
+            }
+        });
         // 设置适配器
         gvGroupDetail.setAdapter(mGroupDetailsAdapter);
     }
